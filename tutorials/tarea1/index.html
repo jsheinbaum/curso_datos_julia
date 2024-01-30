@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="/curso_datos_julia/assets/favicon.png">
+  <script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ["\\(", "\\)"]],
+      processEscapes: true,
+    }
+  };
+</script>
+
+<!-- This weird alignment is required by Franklin's parser. -->
+<script
+    async
+    src="/curso_datos_julia/assets/MathJax/MathJax-3.2.2/es5/tex-mml-chtml.js">
+</script>
+
+<style>
+@font-face {
+  src: url("/curso_datos_julia//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Main-Regular.woff">
+}
+</style>
+
+<style>
+@font-face {
+  src: url("/curso_datos_julia//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Zero.woff">
+}
+</style>
+
+<style>
+@font-face {
+  src: url("/curso_datos_julia//assets/MathJax/MathJax-3.2.2/es5/output/chtml/fonts/woff-v2/MathJax_Math-Italic.woff">
+}
+</style>
+
+  <link rel="stylesheet"
+  href="/curso_datos_julia/assets/Highlight/cdn-release-11.5.0/build/styles/github.min.css">
+
+<script
+  src="/curso_datos_julia/assets/Highlight/cdn-release-11.5.0/build/highlight.min.js">
+</script>
+
+<script
+  src="/curso_datos_julia/assets/Highlight/cdn-release-11.5.0/build/languages/julia.min.js">
+</script>
+
+<script
+  src="/curso_datos_julia/assets/Highlight/cdn-release-11.5.0/build/languages/julia-repl.min.js">
+</script>
+
+<script>
+  hljs.configure({tabReplace: '    '});
+  hljs.highlightAll();
+</script>
+
+    <style>
+    @font-face {
+      font-family: JuliaMono-Regular;
+      src: url("/curso_datos_julia//assets/JuliaMono/juliamono-0.044/webfonts/JuliaMono-Regular.woff2");
+    }
+    </style>
+
+  <link rel="stylesheet" href="/curso_datos_julia/css/spectre.min.css">
+  <link rel="stylesheet" href="/curso_datos_julia/css/spectre-exp.min.css">
+  <link rel="stylesheet" href="/curso_datos_julia/css/spectre-icons.min.css">
+  <link rel="stylesheet" href="/curso_datos_julia/css/spectre-overrides.css">
+  <link rel="stylesheet" href="/curso_datos_julia/css/docs.min.css">
+
+  <title> - curso_datos_julia</title>
+  <meta name="description" content="A template for building websites with Julia language content. Easily create Pluto notebooks and publish them online.">
+</head>
+<body>
+  <div class="docs-container off-canvas off-canvas-sidebar-show">
+  <div class="docs-navbar">
+    <a class="off-canvas-toggle btn btn-link btn-action" href="#sidebar"><i class="icon icon-menu"></i></a>
+    <div class="btns d-flex">
+      <a class="btn btn-primary ml-1" href="https://github.com/jsheinbaum/curso_datos_julia">GitHub</a>
+    </div>
+</div>
+
+<div id="sidebar" class="docs-sidebar off-canvas-sidebar">
+
+<div class="docs-brand">
+    <h5><a href="/curso_datos_julia/">Julia Tutorials Template</a></h5>
+</div>
+
+<div class="docs-nav">
+<div class="accordion-container">
+  <ul class="menu menu-nav">
+    <div class="menu-header">Using this template</div>
+    <li class='menu-item '><a href='/curso_datos_julia/getting-started/'>Getting started</a></li>
+    <br/>
+    <div class="menu-header">Example Pluto tutorials</div>
+    <li class='menu-item '><a href='/curso_datos_julia/tutorials/linear-model/'>Linear model</a></li>
+    <li class='menu-item '><a href='/curso_datos_julia/tutorials/ode/'>Error Propagation DiffEqs</a></li>
+    <li class='menu-item '><a href='/curso_datos_julia/tutorials/benchmarking/'>Benchmarking</a></li>
+    <li class='menu-item '><a href='/curso_datos_julia/tutorials/prop_errores/'>Curso Datos Prop Errores</a></li>
+    <li class='menu-item '><a href='/curso_datos_julia/tutorials/algebra_lineal/'>Algebra Lineal</a></li>
+    <li class='menu-item active'><a href='/curso_datos_julia/tutorials/tarea1/'>Tarea1</a></li>
+  </ul>
+</div>
+</div>
+</div>
+<a class="off-canvas-overlay" href="#close"></a>
+
+
+<div class="off-canvas-content">
+<div id="content" class="docs-content">
+<div class="container">
+<!-- Content appended here -->
+<div class="franklin-content">
+<!-- PlutoStaticHTML.Begin -->
+<!--
+    # This information is used for caching.
+    [PlutoStaticHTML.State]
+    input_sha = "23676102945874b8fdf062e3dd69ce64691b6b7d2bd17227ffb78513fbaf5fc6"
+    julia_version = "1.10.0"
+-->
+
+<div class="markdown"><h1>TAREA 1 CURSO ANÁLISIS DE DATOS</h1></div>
+
+
+<div class="markdown"><h3>Ejercicios sobre Cifras Significativas:</h3><ol><li><p><strong>Suma y Resta:</strong> Realiza la operación <span class="tex">$(23.45 + 6.2 - 0.123)$</span> con el número adecuado de cifras significativas.</p></li><li><p><strong>Multiplicación y División:</strong> Calcula <span class="tex">$(4.56 \times 2.1 / 3.789)$</span> con el número correcto de cifras significativas.</p></li><li><p><strong>Operaciones Mixtas:</strong> Resuelve la expresión <span class="tex">$(8.21 + 3.45) \times 2.0 / 4.567 )$</span> asegurándote de mantener la precisión adecuada.</p></li><li><p><strong>Conversión de Unidades:</strong> Convierte 375 metros a kilómetros con la cantidad apropiada de cifras significativas.</p></li><li><p><strong>Potencias:</strong> Eleva <span class="tex">$(5.67)$</span> a la potencia <span class="tex">$(3.2)$</span> y expresa el resultado con el número correcto de cifras significativas.</p></li></ol><h3>Ejercicios sobre Propagación de Errores:</h3><ol start="6"><li><p><strong>Multiplicación de Cantidades con Incertidumbre:</strong> Si <span class="tex">$( A = 2.5 \pm 0.1 )$</span> y <span class="tex">$( B = 3.0 \pm 0.2 )$</span>, calcula <span class="tex">$( C = A \times B )$</span> con la incertidumbre asociada.</p></li><li><p><strong>Suma de Cantidades con Incertidumbre:</strong> Suma <span class="tex">$( X = 15.4 \pm 0.3 )$</span> y <span class="tex">$( Y = 8.6 \pm 0.2 )$</span> y determina la incertidumbre de <span class="tex">$( Z = X + Y )$</span>.</p></li><li><p><strong>División de Cantidades con Incertidumbre:</strong> Si <span class="tex">$(P = 20.0 \pm 0.5 )$</span> y <span class="tex">$( Q = 4.0 \pm 0.2 )$</span>, calcula <span class="tex">$((R=P)/Q)$</span> con su respectiva incertidumbre.</p></li><li><p><strong>Operaciones Combinadas:</strong> Si <span class="tex">$(D = (3.2 \pm 0.1) \times (5.0 \pm 0.2) + (2.0 \pm 0.3))$</span>, encuentra la incertidumbre asociada a <span class="tex">$( D )$</span>.</p></li><li><p><strong>Comparación de Resultados:</strong> Realiza dos mediciones <span class="tex">$( M_1 = 14.2 \pm 0.1 )$</span> y <span class="tex">$( M_2 = 14.5 \pm 0.2 )$</span> y determina si hay una diferencia significativa entre ellas.</p></li></ol></div>
+
+
+<div class="markdown"><h3>Mas Ejercicios sobre Cifras Significativas:</h3><ol start="11"><li><p>Evalúa <span class="tex">$(3.45 + 1.2) \times 4.67)$</span> con el número correcto de cifras significativas.</p></li><li><p>Realiza la operación <span class="tex">$(8.96 \div (2.3 - 0.123))$</span> considerando cifras significativas.</p></li><li><p>Expresa <span class="tex">$(560.0 {m} + 12.34 {m} )$</span> con el número adecuado de cifras significativas.</p></li><li><p>Calcula <span class="tex">$(5.67 \times 2.1)^{3.4})$</span> con la precisión apropiada.</p></li><li><p>Convierte <span class="tex">$32.0$</span>°C a Kelvin manteniendo el número correcto de cifras significativas.</p></li><li><p>Realiza la suma <span class="tex">$(14.2 + 0.456 + 3.1)$</span> con el número correcto de cifras significativas.</p></li><li><p>Expresa <span class="tex">$(6.789 \times 10^4)$</span> en notación científica con cifras significativas.</p></li><li><p>Determina cuántas cifras significativas tiene el número <span class="tex">$0.00723$</span>.</p></li><li><p>Convierte <span class="tex">$2.345$</span> km a metros con la precisión adecuada.</p></li><li><p>Eleva <span class="tex">$( (2.0 \pm 0.1))$</span> a la potencia $(3.0 \pm 0.2)) $  con el número correcto de cifras significativas.</p></li></ol><h3>Ejercicios sobre Errores Relativos:</h3><h3>Productos:</h3><ol start="21"><li><p><strong>Producto Simple:</strong></p></li></ol><p>Si <span class="tex">$( A = 3.0 \pm 0.2 )$</span> y <span class="tex">$( B = 2.5 \pm 0.1 )$</span>, calcula el producto <span class="tex">$( C = A \cdot B )$</span> y determina su error relativo.</p><ol start="22"><li><p><strong>Producto Compuesto:</strong></p></li></ol><p>Con <span class="tex">$( X = 5.0 \pm 0.3 )$</span> y 4( Y = 2.2 \pm 0.05 )<span class="tex">$, encuentra $( Z = X \cdot Y^2 )$</span> y su error relativo.</p><ol start="23"><li><p><strong>Producto con Potencia:</strong></p></li></ol><p>Si <span class="tex">$( P = 4.8 \pm 0.4 )$</span> y  <span class="tex">$Q = 3.0 \pm 0.2 )$</span>, evalúa <span class="tex">$( R = P^2 \cdot Q )$</span> y encuentra su error relativo.</p><ol start="24"><li><p><strong>Producto de Varias Variables:</strong></p></li></ol><p>Dadas <span class="tex">$( M = 1.5 \pm 0.1 )$</span>, <span class="tex">$(N = 2.0 \pm 0.3)$</span>, y <span class="tex">$( O = 3.2 \pm 0.2)$</span> , calcula <span class="tex">$( P = M \cdot N \cdot O )$</span> y su error relativo.</p><ol start="25"><li><p><strong>Producto con Constante:</strong></p></li></ol><p>Multiplica <span class="tex">$( 7.0 \pm 0.5 )$</span> por <span class="tex">$( 2.4 \pm 0.1 )$</span> y determina el error relativo del resultado.</p><h3>Cocientes:</h3><ol start="26"><li><p><strong>Cociente Simple:</strong></p></li></ol><p>Con <span class="tex">$(A = 10.0 \pm 0.5 )$</span> y <span class="tex">$(B = 2.5 \pm 0.1)$</span>, calcula el cociente <span class="tex">$( C = A / B)$</span> y determina su error relativo.</p><ol start="27"><li><p><strong>Cociente Compuesto:</strong></p></li></ol><p>Evalúa <span class="tex">$(X = 8.0 \pm 0.3 )$</span> dividido por <span class="tex">$( Y = 2.2 \pm 0.05 )$</span> al cuadrado y encuentra su error relativo.</p><ol start="28"><li><p><strong>Cociente con Potencia:</strong></p></li></ol><p>Si <span class="tex">$( P = 6.0 \pm 0.3 )$</span> y <span class="tex">$(Q = 2.5 \pm 0.2)$</span>, determina <span class="tex">$( R = \frac{P^2}{Q} )$</span>  y su error relativo.</p><ol start="29"><li><p><strong>Cociente de Varias Variables:</strong></p></li></ol><p>Dadas <span class="tex">$( M = 3.0 \pm 0.2 )$</span>, <span class="tex">$( N = 1.5 \pm 0.1 )$</span>, y <span class="tex">$( O = 2.0 \pm 0.3 )$</span>, calcula <span class="tex">$( P = \frac{M \cdot N}{O} )$</span> y su error relativo.</p><ol start="30"><li><p><strong>Cociente con Constante:</strong> Divide <span class="tex">$( 5.0 \pm 0.4 )$</span> por <span class="tex">$( 1.2 \pm 0.1 )$</span> y determina el error relativo del resultado.</p></li><li><p>Si una medida es <span class="tex">$( 15.6 \pm 0.4 )$</span>, calcula su error relativo.</p></li><li><p>Determina el error relativo porcentual de una longitud medida como <span class="tex">$( 18.2 \pm 0.5 )$</span> cm.</p></li><li><p>Encuentra el error relativo de una masa medida como <span class="tex">$( 25.3 \pm 0.7 )$</span> g.</p></li><li><p>Calcula el error relativo porcentual de una velocidad medida como <span class="tex">$( 30.0 \pm 1.5 )$</span> m/s.</p></li><li><p>Si el tiempo es <span class="tex">$( 10.0 \pm 0.2 )$</span>, determina su error relativo porcentual.</p></li></ol><h3>Ejercicios sobre Propagación de Errores en Funciones de Dos Variables:</h3><ol start="36"><li><p>Dada <span class="tex">$( f(x, y) = x^2 + 2y )$</span>, encuentra el error relativo de <span class="tex">$( f)$</span> si <span class="tex">$( x = 3.0 \pm 0.1)$</span> y <span class="tex">$( y = 1.5 \pm 0.2)$</span>.</p></li><li><p>Para <span class="tex">$( g(a, b) = \sqrt{a^2 + b^2} )$</span>, calcula el error relativo de <span class="tex">$( g )$</span> con <span class="tex">$( a = 4.0 \pm 0.3 )$</span> y <span class="tex">$(b = 2.5 \pm 0.1)$</span>.</p></li><li><p>Encuentra el error relativo porcentual de <span class="tex">$( h(u, v) = \frac{u}{v} )$</span> con <span class="tex">$( u = 8.0 \pm 0.4 )$</span> y <span class="tex">$( v = 2.0 \pm 0.1 )$</span>.</p></li><li><p>Si <span class="tex">$( k( m, n) = m^n )$</span>, determina el error relativo de <span class="tex">$k)$</span> con:          <span class="tex">$m = 5.0 \pm 0.2$</span>  y   <span class="tex">$n = 2.0 \pm 0.1$</span>.</p></li><li><p>Para <span class="tex">$( p(x, y) = x \cdot e^y )$</span>, calcula el error relativo de <span class="tex">$( p )$</span> con <span class="tex">$( x = 2.5 \pm 0.1 )$</span> y <span class="tex">$( y = 0.8 \pm 0.05 )$</span>.</p></li></ol></div>
+
+
+<div class="markdown"><p>Una serie de tiempo armónica se puede expresar en función de los coeficientes <span class="tex">${(X_1,X_2)}$</span>  o de la amplitud <span class="tex">$A$</span> y la fase <span class="tex">$\theta$</span> como:</p><p class="tex">$$T(t)= X_1 \sin(ωt) + X_2 \cos(ωt)$$</p><p class="tex">$$T(t) = A \cos(ωt -θ)$$</p><p>Calcula el error en la amplitud y la fase en función de las desv estándar y correlación de <span class="tex">${(X_1,X_2)}$</span> dónde:</p><p class="tex">$$\begin{eqnarray}
+A=\sqrt{(X_1^2 +X_2^2)} \\
+θ=tan^{-1}(\frac{X_2}{X_1})
+\end{eqnarray}$$</p></div>
+
+
+<div class="markdown"><p>Les dan una resma de 500 hojas y una regla graduada un milímetros. Medir el espesor de una hoja con una precisión del orden ~ <span class="tex">$1.0 e{-3}$</span> milímetros.  </p></div>
+<div class='manifest-versions'>
+<p>Built with Julia 1.10.0 and</p>
+
+</div>
+
+<!-- PlutoStaticHTML.End -->
+
+<p><em>To run this tutorial locally, download <a href="/curso_datos_julia/tutorials/tarea1.jl">this file</a> and open it with <a href="https://plutojl.org">Pluto.jl</a>.</em></p>
+<script type="text/javascript" src="/curso_datos_julia/libs/ansi_up.js" defer></script>
+
+<div id="copyright" class="docs-footer container grid-lg">
+<a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> Julio Sheinbaum using Rik Huijzer's Template
+</div>
+</div><!-- CONTENT ENDS HERE -->
+    </div>
+    </div>
+    </div>
+    </div>
+  </body>
+</html>
