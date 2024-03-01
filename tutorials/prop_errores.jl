@@ -107,6 +107,12 @@ using Dates
 # ╔═╡ 5661504e-98a9-475b-b37e-ffcbde5b8335
 using KDEstimation
 
+# ╔═╡ 2d7938c4-30d3-4ea8-a3b5-77c3e5e2a86b
+include("plot_ellipse_from_cov.jl")
+
+# ╔═╡ 36532dc8-44a3-4f24-9374-88f91408107f
+include("get_ellipse_from_cov.jl")
+
 # ╔═╡ ab3bd1bb-412a-4395-aa16-6c27fa825600
 md"""
 ### CIFRAS SIGNIFICATIVAS, EXACTITUD,PRECISIÓN, INCERTIDUMBRES Y PROPAGACIÓN DE ERRORES
@@ -955,14 +961,14 @@ Tomado del Tutorial de Doggo.jl
 md"## Distribución Normal"
 
 # ╔═╡ 18567e0d-8f29-4ea4-92fc-6fabab0d5bac
-md"Mean (μ): $(@bind mu Slider(-3.0:0.1:3.0, 0.0, true))"
+md"Mean (μ): $(@bind mu PlutoUI.Slider(-3.0:0.1:3.0, 0.0, true))"
 
 # ╔═╡ b7c2233a-7957-4347-83d9-6f87d521eb3b
-md"Standard Deviation (σ): $(@bind sigma Slider(0.5:0.01:3.0, 1.0, true))"
+md"Standard Deviation (σ): $(@bind sigma PlutoUI.Slider(0.5:0.01:3.0, 1.0, true))"
 
 # ╔═╡ c25a9157-60e8-4309-b1e8-82f95453cd95
 begin
-	plot(Normal(mu, sigma),
+	Plots.plot(Normal(mu, sigma),
 		legend = false,
 		xlims = (-5, 5),
 		ylims = (0, 1),
@@ -980,18 +986,13 @@ end
 md"## Distribución Beta"
 
 # ╔═╡ e599ffd3-2ca7-42ee-b08f-7cf980d5a9be
-md"alpha (α): $(@bind alpha Slider(0.1:0.1:5.0, 1.0, true))"
+md"alpha (α): $(@bind alpha PlutoUI.Slider(0.1:0.1:5.0, 1.0, true))"
 
 # ╔═╡ 786bb65f-fc11-4e54-9577-58cbae0abe91
-md"beta (β): $(@bind beta Slider(0.1:0.1:5.0, 1.0, true))"
-
-# ╔═╡ e2192613-78a6-4266-9cd1-cce417aeb25a
-	#print(quantile.(Normal(mu,sigma), [0.5, .75]))
-#median(Normal(mu,sigma))
-	median(Beta(alpha,beta))
+md"beta (β): $(@bind beta PlutoUI.Slider(0.1:0.1:5.0, 1.0, true))"
 
 # ╔═╡ e29357ed-2e57-48cb-b788-d3069401096f
-plot(Beta(alpha, beta),
+Plots.plot(Beta(alpha, beta),
 	legend = false,
 	xlims = (0, 1),
 	ylims = (0, 5),
@@ -1000,6 +1001,13 @@ plot(Beta(alpha, beta),
 	alpha = 0.3,
 	title = "Función de Densidad de Probabilidad"
 )
+
+# ╔═╡ b3893929-a332-41e1-aa24-41254e4e4a80
+begin
+println("quantile Normal = ", quantile.(Normal(mu,sigma), [0.025, .975]))
+println("median Normal = ", median(Normal(mu,sigma)))
+println("median Beta =", median(Beta(alpha,beta)))
+end
 
 # ╔═╡ 759f4a2b-b7a1-49e4-99a6-03eebf4d0573
 md"## Distribución Binomial"
@@ -1015,10 +1023,10 @@ $\binom{n}{x}=\frac{n!}{x!(n-x)!}$
 """
 
 # ╔═╡ 4b0456cf-29ae-4551-a704-7f5fa906df89
-md"Número de intentos (n): $(@bind n Slider(1:1:10, 1, true))"
+md"Número de intentos (n): $(@bind n PlutoUI.Slider(1:1:10, 1, true))"
 
 # ╔═╡ 144a4161-0a84-42f1-b674-946f0200101f
-md"Probabilidad de éxitos (p): $(@bind p Slider(0.00:0.01:1.0, 0.5, true))"
+md"Probabilidad de éxitos (p): $(@bind p PlutoUI.Slider(0.00:0.01:1.0, 0.5, true))"
 
 # ╔═╡ 0901abad-c184-436d-910f-ae429c15d122
 begin
@@ -1031,7 +1039,7 @@ begin
 		widen =  true,
 		title = "Probability Mass Function"
 	)
-	scatter!(Binomial(n, p),
+	Plots.scatter!(Binomial(n, p),
 		markersize = 8,
 	)
 end
@@ -1118,8 +1126,8 @@ probEst(n,N) = sum([cumpEv(n) for _ in 1:N])/N
 npers=1:50
 mcEst1 = [probEst(n,10^4) for n in npers]
 sol1=[matchE1(n) for n in npers]
-plot(npers,sol1)
-scatter!(npers,mcEst1, shape=:xcross,c=:red, #ms=6, msw=0, shape=:xcross, 
+Plots.plot(npers,sol1)
+Plots.scatter!(npers,mcEst1, shape=:xcross,c=:red, #ms=6, msw=0, shape=:xcross, 
 	label="MC", xlims=(0,50), ylims=(0, 1), 
 	xlabel="Num de personas", 
 	ylabel="Probabilidad de mismo cumple", 
@@ -1201,10 +1209,10 @@ bPmf = [pdf(bDist,i) for i in xGrid]
 data = [binomialRV(nn,pp) for _ in 1:N]
 pmfEst = counts(data,0:nn)/N
 
-plot( xGrid, pmfEst, 
+Plots.plot( xGrid, pmfEst, 
 	line=:stem, marker=:circle, 
 	c=:blue, ms=10, msw=0, lw=4, label="MC estimate")
-plot!( xGrid, bPmf, 
+Plots.plot!( xGrid, bPmf, 
 	 line=:stem, marker=:xcross, c=:red, 
 	 ms=6, msw=1, lw=2, label="PMF", xticks=(0:1:10),
 	 ylims=(0,0.3), xlabel="x", ylabel="Probability")
@@ -1233,10 +1241,10 @@ pDistL = Poisson(lambda)
 bPmfL = pdf.(pDistL,xGridL)
 dataL = counts([prn(lambda) for _ in 1:NL],xGridL)/NL
 
-plot( xGridL, dataL, 
+Plots.plot( xGridL, dataL, 
 	line=:stem, marker=:circle, 
 	c=:blue, ms=10, msw=0, lw=4, label="MC estimate")
-plot!( xGridL, bPmfL, line=:stem, 
+Plots.plot!( xGridL, bPmfL, line=:stem, 
 	marker=:xcross, c=:red, ms=6, msw=0, lw=2, label="PMF",
 	ylims=(0,0.2), xlabel="x", ylabel="Probability of x events")
 end
@@ -1325,10 +1333,10 @@ $P(A | B) = \frac{P(B | A)P(A)}{P(B)}$
 
 
 # ╔═╡ 9c8b5503-628d-4e05-898e-52494bc1dd38
-md"prob de enfermedad en la población (Penf): $(@bind Penf Slider(0.001:0.001:0.01, 0.001, true))"
+md"prob de enfermedad en la población (Penf): $(@bind Penf PlutoUI.Slider(0.001:0.001:0.01, 0.001, true))"
 
 # ╔═╡ 8b1137f0-debc-4d4b-a396-2a48cacaed36
-md"prob de falso positivo en test (Ptestnenf): $(@bind Ptestnenf Slider(0.01:0.01:0.05, 0.01, true))"
+md"prob de falso positivo en test (Ptestnenf): $(@bind Ptestnenf PlutoUI.Slider(0.01:0.01:0.05, 0.01, true))"
 
 # ╔═╡ f10da811-6e52-412d-9ad3-957059e93495
 begin
@@ -1360,14 +1368,14 @@ data1 = [mean(rand(dist1,nc)) for _ in 1:Nc]
 data2 = [mean(rand(dist2,nc)) for _ in 1:Nc]
 data3 = [mean(rand(dist3,nc)) for _ in 1:Nc]
 
-stephist([data1 data2 data3], bins=100, 
+Plots.stephist([data1 data2 data3], bins=100, 
     c=[:blue :red :green], xlabel = "x", ylabel = "Density",
     label=["Average of Uniforms" "Average of Exponentials" "Average of Normals"], 
     normed=true, xlims=(0,2), ylims=(0,2.5))
 Ftest=Normal(1.0,0.183)
 Fest2=Exponential(1.0)
-plot!(Ftest,width=5)
-plot!(Fest2,width=3)
+Plots.plot!(Ftest,width=5)
+Plots.plot!(Fest2,width=3)
 end
 
 # ╔═╡ 45d39348-0197-45c1-beaa-d174dfbbfa14
@@ -1684,6 +1692,15 @@ end
 # ╔═╡ bdce6b97-a26d-4b56-b4e2-7dc567900ce9
 z18=(δv18)./std(δv18);zu18=(δu18)./std(δu18)
 
+# ╔═╡ 79d83cb4-c8ef-4b86-8f56-e83ce9393e89
+begin
+	include("plot_ellipse_from_cov2.jl")
+#	Plots.scatter(zu18,z18)
+	plot_ellipse_from_covariance_matrix2(zu18,z18,factor=[1,2,3],lw=5)
+#	Plots.plot(pl2)
+#Plots.plot!(aa[1,:],bb[1,:],legend=false)
+end
+
 # ╔═╡ f47ceb5f-6de6-4297-98b2-44af85c7f310
 hz18 = fit(Histogram, z18,nbins=100);
 
@@ -1725,6 +1742,36 @@ A18=stack(d7,dims=1)
 
 # ╔═╡ 8369c771-b098-450c-941e-8cc4ffd03bc4
 Plots.scatter(A18[:,1],A18[:,2]);Plots.scatter!(zu18,z18)
+
+# ╔═╡ 4147834e-826d-46bd-908a-f2493506f5c9
+cov18=cov([zu18 z18])
+
+# ╔═╡ 395c2a22-6c56-4bba-89f0-4312edf3ade0
+begin
+	include("plot_ellipse_from_cov.jl")
+	pplot=plot_ellipse_from_covariance_matrix(cov18,factor=[1,2,3],lw=5)
+	pplot=Plots.scatter!(zu18,z18,ms=.75,markercolor=:blue)
+    Plots.plot!(pplot)
+end
+
+# ╔═╡ 41e1f346-65a1-4031-be5e-ba751a823e9c
+kz=[zu18 z18]
+
+# ╔═╡ fa951d0a-c3a0-4568-90bc-b359444363ea
+(aa,bb)=get_ellipse_from_covariance_matrix(cov18,factor=[1,2,3])
+
+# ╔═╡ ee5165c5-d76b-40cf-9043-3981126c7f81
+bb[1,:]
+
+# ╔═╡ 5f9bcb74-96ad-4071-950f-edf13e05f254
+begin
+	pl1=Plots.scatter(zu18,z18)
+	for i in [1,2,3]
+    pl1=Plots.plot!(aa[i,:],bb[i,:],legend=false,lw=5)
+	end
+	Plots.plot(pl1)
+#Plots.plot!(aa[1,:],bb[1,:],legend=false)
+end
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -4434,11 +4481,11 @@ version = "1.4.1+1"
 # ╠═18567e0d-8f29-4ea4-92fc-6fabab0d5bac
 # ╠═b7c2233a-7957-4347-83d9-6f87d521eb3b
 # ╠═c25a9157-60e8-4309-b1e8-82f95453cd95
-# ╠═e2192613-78a6-4266-9cd1-cce417aeb25a
 # ╠═690b2f82-69da-4420-ac87-b25ce10bbfa6
 # ╠═e599ffd3-2ca7-42ee-b08f-7cf980d5a9be
 # ╠═786bb65f-fc11-4e54-9577-58cbae0abe91
 # ╟─e29357ed-2e57-48cb-b788-d3069401096f
+# ╠═b3893929-a332-41e1-aa24-41254e4e4a80
 # ╟─759f4a2b-b7a1-49e4-99a6-03eebf4d0573
 # ╠═70d39fb8-58d5-4a32-842d-4067ed205dbb
 # ╠═4b0456cf-29ae-4551-a704-7f5fa906df89
@@ -4523,5 +4570,14 @@ version = "1.4.1+1"
 # ╠═5930918e-2d1e-4eab-8eb3-ad2136fe3984
 # ╠═fa1886a3-6d31-4eae-9714-5471955e0215
 # ╠═8369c771-b098-450c-941e-8cc4ffd03bc4
+# ╠═4147834e-826d-46bd-908a-f2493506f5c9
+# ╠═41e1f346-65a1-4031-be5e-ba751a823e9c
+# ╠═2d7938c4-30d3-4ea8-a3b5-77c3e5e2a86b
+# ╠═36532dc8-44a3-4f24-9374-88f91408107f
+# ╠═fa951d0a-c3a0-4568-90bc-b359444363ea
+# ╠═ee5165c5-d76b-40cf-9043-3981126c7f81
+# ╠═5f9bcb74-96ad-4071-950f-edf13e05f254
+# ╠═79d83cb4-c8ef-4b86-8f56-e83ce9393e89
+# ╠═395c2a22-6c56-4bba-89f0-4312edf3ade0
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
