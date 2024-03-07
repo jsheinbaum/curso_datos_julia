@@ -226,10 +226,10 @@ plot!([0,0.1],[0,0.1],c=:black, width=3, label="1:1 slope",
 
 # ## Carga Librerías para leer matlab, probar hipótesis, etc
 
-Pkg.add("MAT")
-Pkg.add("Dates")
-Pkg.add("Measures")
-Pkg.add("HypothesisTests")
+#Pkg.add("MAT")
+#Pkg.add("Dates")
+#Pkg.add("Measures")
+#Pkg.add("HypothesisTests")
 using MAT
 using Dates
 using Measures
@@ -318,6 +318,7 @@ plot(vec(fecha2),vec(mtemp2))
 
 fecha=num2date.(time)
 plot(fecha,temp)
+plot!(vec(fecha2),vec(mtemp2))
 
 sampleData=temp[1:Int64(ceil(length(temp)/2))];
 sampleData=mtemp2;
@@ -438,14 +439,14 @@ p2 = plot!(cdf.(distH0,xGrid), diffF(distH0, xGrid), lw=0.5,
 plot(p1, p2, legend=:bottomright, size=(800, 400), margin = 5mm)
 # -
 ####COVARIANZAS y EJES PRiNCIPALES
-m1=length(δv3[:,1]); #45
-n1=length(δv3[1])
+m1=length(v[1,:]); #45
 v2=v[21:end-13,:];
 u2=u[21:end-13,:];
 u3=[reshape(u2[:,i],24,93*7) for i=1:m1];
 v3=[reshape(v2[:,i],24,93*7) for i=1:m1];
 δu3=[mean(u3[i],dims=1) for i in 1:m1];
 δv3=[mean(v3[i],dims=1) for i in 1:m1];
+n1=length(δv3[1])
 δv3=[δv3[i] .- mean(δv3[i]) for i in 1:m1];
 δu3=[δu3[i] .- mean(δu3[i]) for i in 1:m1];
 kk=[cov([δu3[i];δv3[i]]',[δu3[i];δv3[i]]') for i=1:m1];
@@ -525,9 +526,9 @@ Abajo se presenta la función de Julia para calcular intervalos de confianza par
 		return B
 	end
 	data1 = vec(δv3[40])
-	data2 =vec(δv3[30]) 
+	data2 =vec(δv3[38]) 
 	prof1=prof[40]
-	prof2=prof[30]
+	prof2=prof[38]
 	n_bootstrap = 10000
 	alpha = 0.05
 
@@ -545,7 +546,7 @@ Abajo se presenta la función de Julia para calcular intervalos de confianza par
 ##############################
 # +
 using NCDatasets
-ds = NCDataset("aviso_LC_2018.nc")
+ds = NCDataset("/Users/julios/JULIA/curso_datos_julia/tutorials/aviso_LC_2018.nc")
 ds["adt"]
 adt=reshape(ds["adt"],28*52,365)
 # Find indices of NaN values

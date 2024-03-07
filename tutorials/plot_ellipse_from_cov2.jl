@@ -30,7 +30,7 @@ using LinearAlgebra
     # Compute x and y coordinates of the ellipse
 	
     pplot=Plots.scatter(u,v,aspect_ratio=:equal, xlabel="x", ylabel="y", legend=false; kwargs...)
-    for i=1:length(factor)
+    for i=1 in eachindex(factor)
 	x_values = [center[1] + factor[i] * major_length * cos(θ) * major_axis[1] + factor[i] * minor_length * sin(θ) * minor_axis[1] for θ in θ_values]
 	y_values = [center[2] + factor[i] * major_length * cos(θ) * major_axis[2] + factor[i] * minor_length * sin(θ) * minor_axis[2] for θ in θ_values]
     

@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.19.36
+# v0.19.37
 
 using Markdown
 using InteractiveUtils
@@ -18,7 +18,10 @@ end
 using Symbolics
 
 # ╔═╡ 3983aab6-8ec1-4fd6-a23c-8ad7b94cfc28
- using LinearAlgebra,Latexify, Printf,WGLMakie#,Plots
+ using LinearAlgebra,Latexify, Printf, WGLMakie#,Plots
+
+# ╔═╡ 22ff8589-fd71-40be-9b51-3a6f8bc7ef15
+using LaTeXStrings
 
 # ╔═╡ 6d38a682-f292-4f07-879d-2e4c11c74da6
 using PlutoUI,InteractiveUtils,Markdown, LinearSolve, Krylov
@@ -68,6 +71,9 @@ md"""
 # ╔═╡ a73af075-0eea-4c7d-ac6d-32e3679f8617
 WGLMakie.activate!()
 
+# ╔═╡ 74a4c99a-61a7-4bcb-bf52-54baf6b7bd34
+Latexify.set_default(; starred=true)
+
 # ╔═╡ c1b1a793-92f4-4e74-b217-5ea366d5fd89
 @variables x y z
 
@@ -95,12 +101,12 @@ end
 latexify(A*[x;y;z] ~ [2;0;0])
 
 # ╔═╡ a493f046-2453-4df5-a48b-71bc57f7944c
-(f ~ [3;0;0])
+(f ~ [4;0;0])
 
 # ╔═╡ a098cdd8-02a3-4944-9268-8e6bb5df1bf1
 begin
-fsol=Symbolics.solve_for([f[1] ~ 2.0,f[2]~0.0,f[3]~0.0],[x y z]);
-rfsol=[round(fsol[l];digits=4) for l=1:length(fsol)];
+fsol=Symbolics.solve_for([f[1] ~ -1.0,f[2]~0.0,f[3]~-5.0],[x y z]);
+rfsol=[round(fsol[l];digits=4) for l in eachindex(fsol)];
 #str1="the solution of this system is [x,y,z]= "
 latexify(("[x,y,z]" ~ round4.(rfsol)))
 #
@@ -164,7 +170,7 @@ md"""
 
 # ╔═╡ f72f0686-f3f8-4226-8c90-33da55ce5e29
 begin
-fsol3=Symbolics.solve_for([f3[1] ~ 2.0,f3[2] ~ 2.0],[x y])
+fsol3=Symbolics.solve_for([f3[1] ~ 2.0,f3[2] ~ 1.0],[x y])
 latexify(("[x,y]" ~ [round4(fsol3[1]);round4(fsol3[2])]))
 
 #t1*string(fsol3)"
@@ -266,11 +272,12 @@ end
 end
 
 # ╔═╡ 188a7dda-1407-4365-bd51-b79728f71b45
+begin
 latexify("A" ~ A),
 latexify("SP" ~ [1 0 0;4 -1 -1;0 0 1]),
 latexify("SPA" ~ [1 0 0;4 -1 -1;0 0 1]*A),
-latexify("4row1A-row2A-row3A" ~ [4*A[1,:]-A[:2,:]-A[3,:]]')
-
+latexify("4A[1,:]-A[2,:]-A[3,:]" ~ [4*A[1,:]-A[2,:]-A[3,:]]')
+end
 
 
 # ╔═╡ f9e55d4b-1c1d-417f-b9ee-3f0d6a100a41
@@ -396,7 +403,7 @@ md""" #### Cambia el lado derecho de la ecuación y resuelve x=A\b
 """
 
 # ╔═╡ 34bf99c5-0a9f-4d60-8c26-2ba972f7e193
-latexify("b" ~ [-2,1.0,2.0] )
+latexify("b" ~ [-2,1.0,-2.0] )
 
 # ╔═╡ b9a7f0bc-2fb4-4620-8364-c4419589e910
 begin
@@ -407,7 +414,7 @@ latexify(("[x,y,z]" ~ round.(xsol1,digits=3)))
 end
 
 # ╔═╡ ccc85829-c70b-4f32-bea4-3d9c568eadcc
-md"### Cuadrados mínimos, caso típico de problema sobre-determinado"
+md"## Cuadrados mínimos, caso típico de problema sobre-determinado"
 
 # ╔═╡ 3a459c84-1a1c-4096-9c72-10ea11a7f2fc
 @bind inoise Slider(0.0:0.2:5,show_value=true,default=1)
@@ -440,9 +447,12 @@ flsq
 end
 
 
+# ╔═╡ e3575a74-ff44-4c6d-ab31-8ca4d34848b0
+xlsq
+
 # ╔═╡ b8bcf86b-8526-4c37-acd9-c266052acb84
 begin
-latexify("xlsq" ~ round4.(xlsq)),
+latexify("xlsq" ~ xlsq),
 latexify("xv" ~ xv)
 end
 
@@ -450,15 +460,19 @@ end
 md"""
 #### $A^t(A\vec{x} -b)= 0$
 #### $A^tA\vec{x} = A^tb)$
-#### $\vec{x} = (A^tA)^{-1}A^tb)$
+#### $\vec{x} = (A^tA)^{-1}A^tb$
 ##### Las diferencias (residuos) deben ser ortogonales al espacio columna de A
 """
 
 # ╔═╡ cbc667b7-c224-4e4a-b17e-ba97c9ead32e
 begin
-slsq=L"$A^t(A\vec{x} -b)"
-latexify(slsq ~ Att'*(Att*xlsq-yobs))
+slsq=L"{A^t(A\vec{x} -b)}"
+residual= Att'*(Att*xlsq-yobs)
+latexify(slsq ~ Att'*(Att*xlsq-yobs))	
 end
+
+# ╔═╡ daa87f35-8d06-4b22-9709-5777966e0205
+render(latexify(slsq ~ residual))
 
 # ╔═╡ 48712159-24dd-4dba-90d0-84be4edea6ee
 md"""
@@ -539,7 +553,7 @@ end
 begin
 LA,VA=eigen(A);
 latexify("A" ~ A),
-latexify("eivalsA" ~ round4.(LA)),
+latexify("eigvalsA" ~ round4.(LA)),
 latexify("eigvecsA" ~ round4.(VA))
 end
 
@@ -906,11 +920,15 @@ exp.(ϵ(ϕ))
 # ╔═╡ bd6d32be-2f3c-49a3-92e3-9b08c44ddb1a
 mexp(ϵ(ϕ))
 
+# ╔═╡ 896b084f-43e3-406e-a6ab-1c94c635cf0b
+round(rand(),sigdigits=3)
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 InteractiveUtils = "b77e0a4c-d291-57a0-90e8-8db25a27a240"
 Krylov = "ba0b0d4f-ebba-5204-a429-3ac8c609bfb7"
+LaTeXStrings = "b964fa9f-0449-5b57-a5c2-d3ea65f4040f"
 Latexify = "23fbe1c1-3f47-55db-b15f-69d7ec21a316"
 LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
 LinearSolve = "7ed4a6bd-45f5-4d41-b270-4a48e9bafcae"
@@ -922,6 +940,7 @@ WGLMakie = "276b4fcb-3e11-5398-bf8b-a0c2d153d008"
 
 [compat]
 Krylov = "~0.9.5"
+LaTeXStrings = "~1.3.1"
 Latexify = "~0.16.1"
 LinearSolve = "~2.22.1"
 PlutoUI = "~0.7.55"
@@ -933,9 +952,9 @@ WGLMakie = "~0.9.4"
 PLUTO_MANIFEST_TOML_CONTENTS = """
 # This file is machine-generated - editing it directly is not advised
 
-julia_version = "1.9.4"
+julia_version = "1.10.0"
 manifest_format = "2.0"
-project_hash = "5022767ba6fb7daa5c4790fabbb3720ff978067b"
+project_hash = "9d3f5f85f8ecb905bf51db30a9d0c6cd4abcaafd"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "41c37aa88889c171f1300ceac1313c06e891d245"
@@ -1192,7 +1211,7 @@ weakdeps = ["Dates", "LinearAlgebra"]
 [[deps.CompilerSupportLibraries_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "e66e0078-7015-5450-92f7-15fbd957f2ae"
-version = "1.0.5+0"
+version = "1.0.5+1"
 
 [[deps.CompositeTypes]]
 git-tree-sha1 = "02d2316b7ffceff992f3096ae48c7829a8aa0638"
@@ -1852,8 +1871,13 @@ uuid = "deac9b47-8bc7-5906-a0fe-35ac56dc84c0"
 version = "8.4.0+0"
 
 [[deps.LibGit2]]
-deps = ["Base64", "NetworkOptions", "Printf", "SHA"]
+deps = ["Base64", "LibGit2_jll", "NetworkOptions", "Printf", "SHA"]
 uuid = "76f85450-5226-5b5a-8eaa-529ad045b433"
+
+[[deps.LibGit2_jll]]
+deps = ["Artifacts", "LibSSH2_jll", "Libdl", "MbedTLS_jll"]
+uuid = "e37daf67-58a4-590a-8e99-b0245dd2ffc5"
+version = "1.6.4+0"
 
 [[deps.LibSSH2_jll]]
 deps = ["Artifacts", "Libdl", "MbedTLS_jll"]
@@ -2050,7 +2074,7 @@ version = "1.1.9"
 [[deps.MbedTLS_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
-version = "2.28.2+0"
+version = "2.28.2+1"
 
 [[deps.Missings]]
 deps = ["DataAPI"]
@@ -2074,7 +2098,7 @@ version = "0.3.4"
 
 [[deps.MozillaCACerts_jll]]
 uuid = "14a3606d-f60d-562e-9121-12d972cd8159"
-version = "2022.10.11"
+version = "2023.1.10"
 
 [[deps.MsgPack]]
 deps = ["Serialization"]
@@ -2144,7 +2168,7 @@ version = "1.3.5+1"
 [[deps.OpenBLAS_jll]]
 deps = ["Artifacts", "CompilerSupportLibraries_jll", "Libdl"]
 uuid = "4536629a-c528-5b80-bd46-f80d51c5b363"
-version = "0.3.21+4"
+version = "0.3.23+2"
 
 [[deps.OpenEXR]]
 deps = ["Colors", "FileIO", "OpenEXR_jll"]
@@ -2161,7 +2185,7 @@ version = "3.1.4+0"
 [[deps.OpenLibm_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "05823500-19ac-5b8b-9628-191a04bc5112"
-version = "0.8.1+0"
+version = "0.8.1+2"
 
 [[deps.OpenSSL]]
 deps = ["BitFlags", "Dates", "MozillaCACerts_jll", "OpenSSL_jll", "Sockets"]
@@ -2201,7 +2225,7 @@ version = "1.6.3"
 [[deps.PCRE2_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "efcefdf7-47ab-520b-bdef-62a2eaa19f15"
-version = "10.42.0+0"
+version = "10.42.0+1"
 
 [[deps.PDMats]]
 deps = ["LinearAlgebra", "SparseArrays", "SuiteSparse"]
@@ -2260,7 +2284,7 @@ version = "0.42.2+0"
 [[deps.Pkg]]
 deps = ["Artifacts", "Dates", "Downloads", "FileWatching", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Serialization", "TOML", "Tar", "UUIDs", "p7zip_jll"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
-version = "1.9.2"
+version = "1.10.0"
 
 [[deps.PkgVersion]]
 deps = ["Pkg"]
@@ -2379,7 +2403,7 @@ deps = ["InteractiveUtils", "Markdown", "Sockets", "Unicode"]
 uuid = "3fa0cd96-eef1-5676-8a61-b3b8758bbffb"
 
 [[deps.Random]]
-deps = ["SHA", "Serialization"]
+deps = ["SHA"]
 uuid = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 
 [[deps.RandomExtensions]]
@@ -2621,6 +2645,7 @@ version = "1.2.1"
 [[deps.SparseArrays]]
 deps = ["Libdl", "LinearAlgebra", "Random", "Serialization", "SuiteSparse_jll"]
 uuid = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+version = "1.10.0"
 
 [[deps.Sparspak]]
 deps = ["Libdl", "LinearAlgebra", "Logging", "OffsetArrays", "Printf", "SparseArrays", "Test"]
@@ -2686,7 +2711,7 @@ version = "1.4.2"
 [[deps.Statistics]]
 deps = ["LinearAlgebra", "SparseArrays"]
 uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
-version = "1.9.0"
+version = "1.10.0"
 
 [[deps.StatsAPI]]
 deps = ["LinearAlgebra"]
@@ -2737,9 +2762,9 @@ deps = ["Libdl", "LinearAlgebra", "Serialization", "SparseArrays"]
 uuid = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 
 [[deps.SuiteSparse_jll]]
-deps = ["Artifacts", "Libdl", "Pkg", "libblastrampoline_jll"]
+deps = ["Artifacts", "Libdl", "libblastrampoline_jll"]
 uuid = "bea87d4a-7f5b-5778-9afe-8cc45184846c"
-version = "5.10.1+6"
+version = "7.2.1+1"
 
 [[deps.SymbolicIndexingInterface]]
 git-tree-sha1 = "be414bfd80c2c91197823890c66ef4b74f5bf5fe"
@@ -2972,7 +2997,7 @@ version = "1.5.0+0"
 [[deps.Zlib_jll]]
 deps = ["Libdl"]
 uuid = "83775a58-1f1d-513f-b197-d71354ab007a"
-version = "1.2.13+0"
+version = "1.2.13+1"
 
 [[deps.isoband_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -2995,7 +3020,7 @@ version = "0.15.1+0"
 [[deps.libblastrampoline_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "8e850b90-86db-534c-a0d3-1478176c7d93"
-version = "5.8.0+0"
+version = "5.8.0+1"
 
 [[deps.libfdk_aac_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -3029,7 +3054,7 @@ version = "1.52.0+1"
 [[deps.p7zip_jll]]
 deps = ["Artifacts", "Libdl"]
 uuid = "3f19e933-33d8-53b3-aaab-bd5110c3b7a0"
-version = "17.4.0+0"
+version = "17.4.0+2"
 
 [[deps.x264_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
@@ -3050,15 +3075,17 @@ version = "3.5.0+0"
 # ╟─d3893588-6aa1-409d-8b1a-ee2c96fda393
 # ╠═7ec18854-0620-11ed-2286-5d4f708b7418
 # ╠═3983aab6-8ec1-4fd6-a23c-8ad7b94cfc28
+# ╠═22ff8589-fd71-40be-9b51-3a6f8bc7ef15
 # ╠═a73af075-0eea-4c7d-ac6d-32e3679f8617
+# ╠═74a4c99a-61a7-4bcb-bf52-54baf6b7bd34
 # ╟─6d38a682-f292-4f07-879d-2e4c11c74da6
 # ╠═c1b1a793-92f4-4e74-b217-5ea366d5fd89
 # ╟─48c9f6d8-344c-434f-bb09-d3e118bfe9ca
 # ╟─3a91da73-225c-48c3-89fa-fbf50540e14f
-# ╟─0dc0f395-de9b-40b0-af83-f28f6d7da919
+# ╠═0dc0f395-de9b-40b0-af83-f28f6d7da919
 # ╠═26c0956b-fb82-44ef-8a9c-10bd366fa886
 # ╠═a493f046-2453-4df5-a48b-71bc57f7944c
-# ╟─a098cdd8-02a3-4944-9268-8e6bb5df1bf1
+# ╠═a098cdd8-02a3-4944-9268-8e6bb5df1bf1
 # ╟─9e019683-8bdc-4305-82b7-d512cb28726d
 # ╟─90b3b854-3353-473d-a012-72a0be61886d
 # ╠═92a9f1da-08b0-45f9-a5df-4cca91176470
@@ -3082,11 +3109,11 @@ version = "3.5.0+0"
 # ╠═188a7dda-1407-4365-bd51-b79728f71b45
 # ╠═f9e55d4b-1c1d-417f-b9ee-3f0d6a100a41
 # ╟─fb81b55f-0404-4d11-bbee-1bb08cf7a5a8
-# ╟─838b9237-1333-4afc-8f1f-8f06a9b882d7
+# ╠═838b9237-1333-4afc-8f1f-8f06a9b882d7
 # ╟─15bcb9cf-b468-4f77-817c-3267d7226c8d
-# ╟─8e573ccb-86d9-4f3c-adbc-81018ecb7cf7
+# ╠═8e573ccb-86d9-4f3c-adbc-81018ecb7cf7
 # ╟─f2027eec-5107-4ea2-9794-25bc159652e2
-# ╟─b38d2850-c767-4b80-ac1a-e3a134bf44d8
+# ╠═b38d2850-c767-4b80-ac1a-e3a134bf44d8
 # ╟─de9ce83c-0da6-4dd2-ace5-fdae8b4df025
 # ╟─ea91d037-6ad2-44f3-b04f-fa26353b4240
 # ╟─22c9db03-cacd-4658-9994-68b4ff29a76d
@@ -3096,8 +3123,8 @@ version = "3.5.0+0"
 # ╟─6f81ce75-1bca-4073-a76f-0aab6d20c8a7
 # ╟─f47e6d00-7eff-45b3-baf4-6529d866cf36
 # ╟─4573d0ce-aee5-4b4c-b1e2-29df6a1dfc00
-# ╟─a2726fff-8eff-4570-8a56-0a01b40c6a67
-# ╟─f9b646b1-d201-48ab-8dd8-bb4083ba8f67
+# ╠═a2726fff-8eff-4570-8a56-0a01b40c6a67
+# ╠═f9b646b1-d201-48ab-8dd8-bb4083ba8f67
 # ╠═3a44a0dd-4bb8-491a-bd74-c6f7e2c6c6f2
 # ╠═c32cf782-607c-4a41-892a-1aae585e7010
 # ╠═6371557e-1af0-4e2c-a7b3-37e989fff1ca
@@ -3107,9 +3134,11 @@ version = "3.5.0+0"
 # ╠═ccc85829-c70b-4f32-bea4-3d9c568eadcc
 # ╠═3a459c84-1a1c-4096-9c72-10ea11a7f2fc
 # ╠═9639d400-07a3-40c9-adbb-4269b9c017d3
+# ╠═e3575a74-ff44-4c6d-ab31-8ca4d34848b0
 # ╠═b8bcf86b-8526-4c37-acd9-c266052acb84
 # ╠═389ae6d5-ba80-4944-be4f-b61845a0fe2a
 # ╠═cbc667b7-c224-4e4a-b17e-ba97c9ead32e
+# ╠═daa87f35-8d06-4b22-9709-5777966e0205
 # ╟─48712159-24dd-4dba-90d0-84be4edea6ee
 # ╠═95e0cf44-a8a4-4357-90e9-4a0422d89880
 # ╠═ee6ebb3f-754f-4450-9842-f888ed09b682
@@ -3177,5 +3206,6 @@ version = "3.5.0+0"
 # ╠═da35c661-ede7-4dc0-acaa-525f8772431d
 # ╠═dd9fc92d-e4d1-4d78-9a48-86ba39e07b24
 # ╠═bd6d32be-2f3c-49a3-92e3-9b08c44ddb1a
+# ╠═896b084f-43e3-406e-a6ab-1c94c635cf0b
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

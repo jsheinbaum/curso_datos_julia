@@ -26,7 +26,7 @@ using LinearAlgebra
     
     pplot=Plots.plot(x_values, y_values, aspect_ratio=:equal, xlabel="x", ylabel="y", legend=false; kwargs...)    
     
-    for i=1:length(factor)
+    for i in eachindex(factor)
 	x_values = [center[1] + factor[i] * major_length * cos(θ) * major_axis[1] + factor[i] * minor_length * sin(θ) * minor_axis[1] for θ in θ_values]
 	y_values = [center[2] + factor[i] * major_length * cos(θ) * major_axis[2] + factor[i] * minor_length * sin(θ) * minor_axis[2] for θ in θ_values]
     pplot=Plots.plot!(x_values, y_values, aspect_ratio=:equal, xlabel="x", ylabel="y", legend=false; kwargs...)
